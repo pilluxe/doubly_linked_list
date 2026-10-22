@@ -162,7 +162,6 @@ public:
             removeBack();
         }
         else{
-
             current = current->next;
             temp = temp->prev;
             temp->next = current;
@@ -184,22 +183,22 @@ public:
     void addInOrder(T value){
 
         current = head;
-        if(current == nullptr){
-            addBegin(value);
+        if(current == nullptr){                 //if list is empty
+            addBegin(value);    
             return;
         }
         while(current != nullptr){
-            if(current->value > value){
+            if(current->value > value){                 //if node that we want to add is lower than head
                 addBegin(value);
                 return;
             }
-            else if(current->value < value){
+            else if(current->value < value){            //if node that we want to add is higher than tail
                 if(current->next == nullptr){
                     addEnd(value);
                     return;
                 }
                 current = current->next;
-                if(current->value > value){ 
+                if(current->value > value){                     //if node that we want to add is somewhere between
                     Node<T>* newNode = new Node<T>(value);
                     Node<T>* temp = current;
                     current = current->prev;
@@ -212,16 +211,16 @@ public:
                     return;
                 }
             }
-            else if(current->value == value){
-                if(current->prev == nullptr){
+            else if(current->value == value){               //if we want to add node with value that already exists{
+                if(current->prev == nullptr){               //if node is the same value as head
                     addBegin(value);
                     return;
                 }
-                else if(current->next == nullptr){
+                else if(current->next == nullptr){          //if node is the same value as tail
                     addEnd(value);
                     return;
                 }
-                else{
+                else{                                           //if node is the same value as node somewhere between(in the middle) }
                     Node<T>* newNode = new Node<T>(value);
                     Node<T>* temp = current;
                     current = current->prev;
