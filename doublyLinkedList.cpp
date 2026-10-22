@@ -1,0 +1,275 @@
+#include <iostream>
+ 
+using namespace std;
+
+template<typename T> 
+class Node {
+ 
+public:
+    Node<T>* next;
+    Node<T>* prev;
+    T value;
+ 
+    Node<T>(T value){
+        this->next = nullptr;
+        this->prev = nullptr;
+        this->value = value;
+    }
+};
+ 
+template<typename T>
+class linkedList {
+ 
+public:
+    Node<T>* tail;
+    Node<T>* current;
+    Node<T>* head;
+ 
+    linkedList() {
+        this->head = nullptr;
+        this->current = nullptr;
+        this->tail = nullptr;
+    }
+ 
+    ~linkedList() {
+        clearList();
+        
+    }
+ 
+    void addBegin(T value) {
+
+        Node<T>* newNode = new Node(value);
+ 
+        if (head == nullptr) {
+            head = tail = newNode;
+        }
+        else {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+    }
+ 
+    void showFromBegin() {
+
+        Node<T>* traversal = head;
+
+        while (traversal != nullptr) {
+            cout << traversal->value << " ";
+            traversal = traversal->next;
+        }
+    }
+ 
+    void showFromBack() {
+
+        Node<T>* backwards = tail;
+
+        while (backwards != nullptr) {
+            cout << backwards->value << " ";
+            backwards = backwards->prev;
+        }
+    }
+ 
+    void addEnd(T value) {
+
+        Node<T>* newNode = new Node<T>(value);
+
+        if (tail == nullptr) {
+            head = tail = newNode;
+        }
+        else {
+            newNode->prev = tail;
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    void removeFront(){
+
+        Node<T>* temp = head;
+
+        if(head == nullptr){    //if no elements in list return
+            return;
+        }
+        else if(head == tail){  //if only one elemnt in list delete and set nullptrs
+            delete head;
+            head = nullptr;
+            current = nullptr;
+            tail = nullptr;
+        }
+        else{                   //for >2 elements in list copy head, set head to next node then delete connections and delete copy
+            head = head->next;
+            head->prev = nullptr;
+            temp->next = nullptr;
+            delete temp;
+        }
+    }
+
+    void removeBack(){
+
+        Node<T>* temp = tail;
+
+        if(tail == nullptr){
+            return;
+        }
+        else if(tail == head){
+            delete tail;
+            tail = nullptr;
+            current = nullptr;
+            head = nullptr;
+        }
+        else{
+            tail = tail->prev;
+            tail->next = nullptr;
+            temp->prev = nullptr;
+            delete temp;
+        }
+    }
+
+    void clearList(){
+
+        while(head != nullptr){
+            removeFront();
+        }
+        cout << "List is empty" << endl;
+    }
+
+    Node<T>* findElement(const T& target){
+
+        current = head;
+        while(current != nullptr){
+            if(current->value == target){
+                return current;
+            }
+            else{
+                current = current->next;
+            }
+        }
+        return nullptr;
+    }
+
+    void removeCurrent(){  
+
+        Node<T>* temp = current;
+        Node<T>* temp2 = current;
+        if(current == nullptr){
+            return;
+        }
+        else if(current == head){
+            removeFront();
+        }
+        else if(current == tail){
+            removeBack();
+        }
+        else{
+
+            current = current->next;
+            temp = temp->prev;
+            temp->next = current;
+            current->prev = temp;
+            temp2->prev = nullptr;
+            temp2->next = nullptr;
+            delete temp2;
+            current = nullptr;
+            temp = nullptr;
+        }
+    }
+
+    /*void findAndRemove(T target){   //DO TESTA PO POPRAWIE removeCurrent
+
+        Node<T>* target = findElement(target);
+        removeCurrent(target);
+    }*/
+
+    void addInOrder(T value){
+
+        current = head;
+        if(current == nullptr){
+            addBegin(value);
+            return;
+        }
+        while(current != nullptr){
+            if(current->value > value){
+                addBegin(value);
+                return;
+            }
+            else if(current->value < value){
+                if(current->next == nullptr){
+                    addEnd(value);
+                    return;
+                }
+                current = current->next;
+                if(current->value > value){ 
+                    Node<T>* newNode = new Node<T>(value);
+                    Node<T>* temp = current;
+                    current = current->prev;
+                    current->next = newNode;
+                    newNode->prev = current;
+                    newNode->next = temp;
+                    temp->prev = newNode;
+                    current = nullptr;
+                    temp = nullptr;
+                    return;
+                }
+            }
+            else if(current->value == value){
+                if(current->prev == nullptr){
+                    addBegin(value);
+                    return;
+                }
+                else if(current->next == nullptr){
+                    addEnd(value);
+                    return;
+                }
+                else{
+                    Node<T>* newNode = new Node<T>(value);
+                    Node<T>* temp = current;
+                    current = current->prev;
+                    current->next = newNode;
+                    newNode->prev = current;
+                    newNode->next = temp;
+                    temp->prev = newNode;
+                    current = nullptr;
+                    temp = nullptr;
+                    return;
+                }
+            }
+        }
+    }
+
+};
+ 
+int main()
+{
+    linkedList<float>* ll = new linkedList<float>();
+ 
+    //ll->addBegin(6);
+    //ll->addBegin(2);
+    //ll->addBegin(7);
+    //ll->addBegin(2);
+    ll->addInOrder(8);
+    //ll->addInOrder(6);
+    ll->addInOrder(2);
+    ll->addInOrder(4);
+    ll->addInOrder(4);
+    ll->addInOrder(2);
+    ll->addInOrder(8);
+    //ll->addInOrder(5);
+    //ll->addEnd(200);
+    //ll->addEnd(1);
+    ll->showFromBegin();
+    cout << endl;
+    //ll->findElement(15.5);
+    //ll->removeCurrent();
+    //ll->showFromBegin();
+    //ll->removeFront();
+    //ll->removeCurrent();
+    //cout << endl;
+    //ll->showFromBegin();
+    //ll->removeBack();
+    //cout << endl;
+    //ll->clearList();
+    //ll->showFromBegin();
+    delete ll;
+    return 0;
+}
