@@ -174,11 +174,11 @@ public:
         }
     }
 
-    /*void findAndRemove(T target){   //DO TESTA PO POPRAWIE removeCurrent
+    void findAndRemove(T target){   
 
-        Node<T>* target = findElement(target);
-        removeCurrent(target);
-    }*/
+        findElement(target);
+        removeCurrent();
+    }
 
     void addInOrder(T value){
 
@@ -236,6 +236,17 @@ public:
         }
     }
 
+    void setValue(T newValue){
+
+        current->value = newValue;
+    }
+
+    void findAndChange(T target, T newValue){
+
+        findElement(target);
+        setValue(newValue);
+    }
+
 };
  
 int main()
@@ -258,12 +269,14 @@ int main()
     //ll->addEnd(1);
     ll->showFromBegin();
     cout << endl;
-    //ll->findElement(15.5);
+    ll->findAndChange(8, 500);
+    ll->findAndRemove(4);
+    //ll->findElement(4);
     //ll->removeCurrent();
-    //ll->showFromBegin();
+    ll->showFromBegin();
     //ll->removeFront();
     //ll->removeCurrent();
-    //cout << endl;
+    cout << endl;
     //ll->showFromBegin();
     //ll->removeBack();
     //cout << endl;
