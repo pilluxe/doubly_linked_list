@@ -2,21 +2,23 @@
  
 using namespace std;
 
+
 template<typename T> 
 class Node {
- 
-public:
+    
+    public:
     Node<T>* next;
     Node<T>* prev;
     T value;
- 
-    Node<T>(T value){
+    
+    Node(T value){
         this->next = nullptr;
         this->prev = nullptr;
         this->value = value;
     }
 };
- 
+
+
 template<typename T>
 class linkedList {
  
@@ -54,20 +56,24 @@ public:
 
         Node<T>* traversal = head;
 
+        std::cout << "List from begin: ";
         while (traversal != nullptr) {
             cout << traversal->value << " ";
             traversal = traversal->next;
         }
+        std::cout << std::endl;
     }
  
     void showFromBack() {
 
         Node<T>* backwards = tail;
 
+        std::cout << "List from back: ";
         while (backwards != nullptr) {
             cout << backwards->value << " ";
             backwards = backwards->prev;
         }
+        std::cout << std::endl;
     }
  
     void addEnd(T value) {
@@ -247,11 +253,30 @@ public:
         setValue(newValue);
     }
 
+    void countElements(){
+
+        current = head;
+        int count = 0;
+        while(current!=nullptr){
+            count++;
+            current = current->next;
+        }
+        std::cout << "List has " << count << " elements." << std::endl;
+    }
+ 
 };
+
+/*template<typename T>
+struct someObject{
+
+    int field1;
+    char field2;
+};*/
+
  
 int main()
 {
-    linkedList<float>* ll = new linkedList<float>();
+    linkedList<int>* ll = new linkedList<int>();
  
     //ll->addBegin(6);
     //ll->addBegin(2);
@@ -268,15 +293,15 @@ int main()
     //ll->addEnd(200);
     //ll->addEnd(1);
     ll->showFromBegin();
-    cout << endl;
-    ll->findAndChange(8, 500);
+    ll->countElements();
+    ll->findAndChange(2, 500);
     ll->findAndRemove(4);
     //ll->findElement(4);
     //ll->removeCurrent();
     ll->showFromBegin();
     //ll->removeFront();
     //ll->removeCurrent();
-    cout << endl;
+    ll->countElements();
     //ll->showFromBegin();
     //ll->removeBack();
     //cout << endl;
